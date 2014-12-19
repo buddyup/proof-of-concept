@@ -1,0 +1,19 @@
+dependencies:
+  override:
+    - pip install -r requirements.txt
+
+test:
+  override:
+    - ./manage.py test --settings=envs.ci
+
+deployment:
+  live:
+    branch: master
+    commands:
+      - git push git@heroku.com:buddyup-poc.git $CIRCLE_SHA1:master
+      - heroku run python manage.py syncdb --migrate --settings=envs.live --app buddyup-poc
+      - heroku restart --app buddyup-poc
+
+notify:
+  webhooks:
+    - url: http://will.buddyup.org/api/circleci/deployed/

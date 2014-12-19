@@ -1,0 +1,6 @@
+{% extends "main_site/base.html" %}{% load compress %}
+{% block admin_class %}active{% endblock %}
+
+{% block container %}
+<iframe src="{% url 'admin:index' %}"></iframe>
+{% endblock %}

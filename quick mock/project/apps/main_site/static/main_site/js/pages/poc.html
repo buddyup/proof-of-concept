@@ -1,0 +1,13 @@
+<div ng-init="init_poc()">
+
+    <div class="chat_messages" >
+        <div class="message" ng-repeat="message in data">
+            {{message.body}}
+        </div>
+    </div>
+    <form>
+        <input name="new_message" type="text" ng-model="new_message">
+        <button  ng-click="submit_message()" >Post</button>
+    </form>
+
+</div>

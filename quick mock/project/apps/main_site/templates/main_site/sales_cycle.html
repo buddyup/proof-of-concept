@@ -1,0 +1,51 @@
+{% extends "main_site/base.html" %}{% load compress %}
+{% block sales_class %}active{% endblock %}
+
+{% block angular %}{% endblock %}
+{% block js %}{{block.super}}
+{% compress js %}
+<script src="{{STATIC_URL}}main_site/js/libs/dragdealer.min.js"></script>
+<script src="{{STATIC_URL}}main_site/js/jquery.csrf.js"></script>
+<script src="{{STATIC_URL}}main_site/js/sales_cycle.js"></script>
+{% endcompress %}
+<script>
+window.save_sales_url = "{% url 'main_site:save_sales' %}";
+</script>
+{% endblock %}
+
+{% block css %}{{ block.super}}
+  {% compress css %}
+  <link rel="stylesheet" href="{{STATIC_URL}}main_site/css/sales.css">
+  {% endcompress %}
+  {% endblock %}
+
+{% block content %}
+<div class="row sales_headers">
+    <div class="sales_label col-xs-2 col-xs-offset-1">Opened</div>
+    <div class="sales_label col-xs-2">Talking</div>
+    <div class="sales_label col-xs-2">Presentation</div>
+    <div class="sales_label col-xs-2">Contract</div>
+    <div class="sales_label col-xs-2">Closed</div>
+</div>
+{% for s in sales %}
+<div class="row sales_row">
+    <div class="col-xs-1 school_name">{{ s.name }}</div>
+    <div class="col-xs-10 dragdealer" id="sales_row_{{s.name|lower}}" data-pk="{{s.pk}}">
+        <div class="drag_handle handle">
+            {% if s.logo_thumb %}
+                <img src="{{s.logo_thumb.url}}"/>
+            {% endif %}
+            
+        </div>
+        <div class="sales_track_bar">
+
+        </div>
+    </div>
+</div>
+<script>
+window.sales_row_{{s.name|lower}}_x = {{s.status}};
+</script>
+{% csrf_token %}
+{% endfor %}
+
+{% endblock %}

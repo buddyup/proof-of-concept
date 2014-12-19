@@ -1,0 +1,69 @@
+<div ng-init="init_poc()">
+
+<div class="filters row breadcrumb">
+<div class="filter_set col-xs-5">
+    Show:
+    <label for="show_raw_data"> <input type="radio" ng-change="update_display_data()" ng-model="sample_type" id="show_events_raw_data" value="raw_data"> Raw Data</label>
+    <label for="show_percentages"> <input type="radio" ng-change="update_display_data()" ng-model="sample_type" id="show_percentages" value="percentages"> Percentages</label>
+    <label for="show_funneled"> <input type="radio" ng-change="update_display_data()" ng-model="sample_type" id="show_funneled" value="funneled"> Funneled</label>
+</div>
+
+<div class="filter_set col-xs-4">
+    Milestones:
+    <label for="show_events_checkbox"> <input type="checkbox" ng-change="update_display_data()" ng-model="show_events" id="show_events_checkbox"> Events</label>
+    <label for="show_code_pushes_checkbox"> <input type="checkbox" ng-change="update_display_data()" ng-model="show_code_pushes" id="show_code_pushes_checkbox"> Code Pushes</label>
+</div>
+<div class="filter_set col-xs-3">
+    <label for="show_aggregate"> <input type="checkbox" ng-change="update_display_data()" ng-model="aggregate" id="show_aggregate" > Aggregate Data</label>
+</div>
+
+
+</div>
+
+    <table class="poc_table">
+    <tr>
+        <th class="first">Date</th>
+        <th>Total users</th>
+        <th>Active users</th>
+        <th>Authenticated</th>
+        <th>Filled in bio</th>
+        <th>Hit home page</th>
+        <th>With one class</th>
+        <th>With one buddy</th>
+        <th>Attended one event</th>
+        <th>Buddy Ratio</th>
+        
+    </tr>
+    <tr ng-repeat="point in display_dataset track by $index">
+        <td ng-if="point.type == 'data_point'" class="first">{{point.display_date}}</td>
+        <td ng-if="point.type == 'data_point'">{{point.num_total_users}}</td>
+        <td ng-if="point.type == 'data_point'">{{point.num_active_users}}<span ng-if="sample_type != 'raw_data'">%</span></td>
+        <td ng-if="point.type == 'data_point'">{{point.num_authenticated}}<span ng-if="sample_type != 'raw_data'">%</span></td>
+        <td ng-if="point.type == 'data_point'">{{point.num_filled_in_profile}}<span ng-if="sample_type != 'raw_data'">%</span></td>
+        <td ng-if="point.type == 'data_point'">{{point.num_hit_home_page}}<span ng-if="sample_type != 'raw_data'">%</span></td>
+        <td ng-if="point.type == 'data_point'">{{point.num_with_one_class}}<span ng-if="sample_type != 'raw_data'">%</span></td>
+        <td ng-if="point.type == 'data_point'">{{point.num_with_one_buddy}}<span ng-if="sample_type != 'raw_data'">%</span></td>
+        <td ng-if="point.type == 'data_point'">{{point.num_attended_one_event}}<span ng-if="sample_type != 'raw_data'">%</span></td>
+        <td ng-if="point.type == 'data_point'">{{(point.buddy_ratio*100).toFixed()}}%</td>
+        
+
+        <td colspan="99" ng-if="point.type == 'code_push' || point.type == 'event'" class="first event">
+            <i ng-if="point.type == 'event'" class="fa fa-bell"></i><i ng-if="point.type == 'code_push'" class="fa fa-code"></i> {{point.name}} - {{point.display_date}}
+            <div class="event_images" ng-if="point.before_pic_1 || point.before_pic_2 || point.before_pic_3 || point.after_pic_1 || point.after_pic_2 || point.after_pic_3">
+                <span class="category" ng-if="point.before_pic_1 || point.before_pic_2 || point.before_pic_3">
+                    Before:
+                    <a ng-if="point.before_pic_1" target="_blank" ng-href="{{ point.before_pic_1 }}"><img ng-src="{{ point.before_pic_thumb_1 }}" /></a>
+                    <a ng-if="point.before_pic_2" target="_blank" ng-href="{{ point.before_pic_2 }}"><img ng-src="{{ point.before_pic_thumb_2 }}" /></a>
+                    <a ng-if="point.before_pic_3" target="_blank" ng-href="{{ point.before_pic_3 }}"><img ng-src="{{ point.before_pic_thumb_3 }}" /></a>
+                </span>
+                <span class="category" ng-if="point.after_pic_1 || point.after_pic_2 || point.after_pic_3">
+                    After:
+                    <a ng-if="point.after_pic_1" target="_blank" ng-href="{{ point.after_pic_1 }}"><img ng-src="{{ point.after_pic_thumb_1 }}" /></a>
+                    <a ng-if="point.after_pic_2" target="_blank" ng-href="{{ point.after_pic_2 }}"><img ng-src="{{ point.after_pic_thumb_2 }}" /></a>
+                    <a ng-if="point.after_pic_3" target="_blank" ng-href="{{ point.after_pic_3 }}"><img ng-src="{{ point.after_pic_thumb_3 }}" /></a>
+                </span>
+            </div>
+        </td>
+    </tr>
+    </table>
+</div>

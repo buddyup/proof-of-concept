@@ -1,0 +1,21 @@
+{% extends "main_site/base.html" %}{% load compress %}
+{% block extra_html %}ng-app="buddyuppoc"{% endblock %}
+{% block extra_body %}ng-controller="mainController"{% endblock %}
+
+{% block stats_class %}active{% endblock %}
+
+{% block js %}{{block.super}}
+{{ data_string }}
+{% compress js %}
+<script src="{{STATIC_URL}}main_site/js/site.js"></script>
+{% endcompress %}
+{% endblock %}
+
+{% block content %}
+<a href="#/">Chat</a>
+<a href="#/stats">Stats</a>
+<div ng-view>
+    <i class="fa fa-circle-o-notch fa-spin"></i> Loading...
+</div>
+{% endblock %}
+
